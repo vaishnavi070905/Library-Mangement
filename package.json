@@ -1,0 +1,27 @@
+{
+  "name": "library-mangement",
+  "version": "1.0.0",
+  "description": "This is a libary management API Backend for the management of users and the books",
+  "homepage": "https://github.com/vaishnavi070905/Library-Mangement#readme",
+  "bugs": {
+    "url": "https://github.com/vaishnavi070905/Library-Mangement/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vaishnavi070905/Library-Mangement.git"
+  },
+  "license": "ISC",
+  "author": "Vaishnavi",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
