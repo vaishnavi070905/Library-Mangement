@@ -1,52 +1,160 @@
-# Library-Mangement
+# Library Management System API
 
-    This is a libary management API Backend for the management of users and the books
+This is a comprehensive library management API backend for managing users, books, subscriptions, and book issuing/returning operations.
 
+## Features
 
-## /users
-GET: get all the list of users in the system
-POST: Create/register a new user
+- User management (CRUD operations)
+- Book management (CRUD operations)
+- Book issuing and returning
+- Subscription management
+- Fine calculation system
+- Data persistence with JSON files
 
-## /users{id}
-GET : Get a user by their ID
-PUT : Updating a user by their ID
-DELETE : Deleting a user by their ID(check if the user still has an issued book)  && (is there any fine to be collected)
+## API Endpoints
 
-## /users/subscription-details{id}
-GET : Get a user subscription details by their ID
-    >> Date of Subscription
-    >> Valid till?
-    >> Fine if any?
+### Home
+- **GET /** - API information and available endpoints
 
-## /books
-GET : Get all the books in the system
-POST : Add a new book in the system
+### Users Management
 
-## /books{id}
-GET: Get a book by its ID
-PUT : Update a book by its ID
-DELETE : Delete a book by its ID
+#### Get Users
+- **GET /users** - Get all users in the system
+- **GET /users/:id** - Get a specific user by ID
+- **GET /users/subscription/:id** - Get user subscription details
 
-## /books/issued
-GET : Get all the issued books
+#### Create/Update Users
+- **POST /users** - Create a new user
+  - Body: `{ "id": "string", "name": "string", "surname": "string", "email": "string", "subscriptionType": "string", "subscriptionDate": "string" }`
+- **PUT /users/:id** - Update user information
+  - Body: `{ "name": "string", "surname": "string", "email": "string", "subscriptionType": "string", "subscriptionDate": "string" }`
 
-## /books/issued/withFine
-GET : Get alll issued books with their fine amount
+#### Delete Users
+- **DELETE /users/:id** - Delete a user by ID
 
-### Subscription Types
-    >> Basic (1 Month)
-    >> Standard (6 Months)
-    >> Premium (12 Months)
+### Books Management
 
->> If a user missed the renewal date, then user should be collected with $100
->> If a user misses his subscription then user is expected to pay $100
->> If a user misses both renewal & subscription, then the collected amount should be $200.
+#### Get Books
+- **GET /books** - Get all books in the system
+- **GET /books/:id** - Get a specific book by ID
+- **GET /books/issued/all** - Get all issued books with user details
+- **GET /books/available/all** - Get all available books (not issued)
 
+#### Create/Update Books
+- **POST /books** - Add a new book
+  - Body: `{ "id": "string", "name": "string", "author": "string", "genre": "string", "price": "string", "publisher": "string" }`
+- **PUT /books/:id** - Update book information
+  - Body: `{ "name": "string", "author": "string", "genre": "string", "price": "string", "publisher": "string" }`
 
-## Commands:
-npm init
-npm i express
-npm i nodemon --save-dev
+#### Delete Books
+- **DELETE /books/:id** - Delete a book by ID (only if not issued)
+
+#### Book Issuing/Returning
+- **POST /books/issue/:bookId** - Issue a book to a user
+  - Body: `{ "userId": "string", "issuedDate": "string", "returnDate": "string" }`
+- **POST /books/return/:bookId** - Return a book from a user
+  - Body: `{ "userId": "string" }`
+
+## Subscription Types
+
+- **Basic** (1 Month)
+- **Standard** (6 Months)
+- **Premium** (12 Months)
+
+## Fine System
+
+- If a user misses the renewal date: $100 fine
+- If a user misses subscription: $100 fine
+- If a user misses both renewal & subscription: $200 fine
+
+## Data Structure
+
+### User Object
+```json
+{
+  "id": "string",
+  "name": "string",
+  "surname": "string",
+  "email": "string",
+  "subscriptionType": "Basic|Standard|Premium",
+  "subscriptionDate": "string",
+  "issuedBook": "string (optional)",
+  "issuedDate": "string (optional)",
+  "returnDate": "string (optional)"
+}
+```
+
+### Book Object
+```json
+{
+  "id": "string",
+  "name": "string",
+  "author": "string",
+  "genre": "string",
+  "price": "string",
+  "publisher": "string"
+}
+```
+
+## Setup Instructions
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+3. Start the production server:
+   ```bash
+   npm start
+   ```
+
+4. Run API tests (make sure server is running):
+   ```bash
+   npm test
+   ```
+
+The server will run on `http://localhost:8081`
+
+## Dependencies
+
+- **express**: Web framework for Node.js
+- **nodemon**: Development dependency for auto-restarting the server
+
+## File Structure
+
+```
+Library-Mangement/
+├── index.js              # Main server file
+├── routes/
+│   ├── users.js         # User-related routes
+│   └── books.js         # Book-related routes
+├── data/
+│   ├── users.json       # User data storage
+│   └── books.json       # Book data storage
+├── package.json         # Project dependencies
+└── README.md           # This file
+```
+
+## Error Handling
+
+The API includes comprehensive error handling:
+- 400: Bad Request (missing required fields)
+- 404: Not Found (user/book not found)
+- 500: Internal Server Error
+
+All responses follow a consistent format:
+```json
+{
+  "success": true|false,
+  "message": "string",
+  "data": "object (optional)"
+}
+```
 
 npm run dev
 
